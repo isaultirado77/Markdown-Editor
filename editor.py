@@ -46,9 +46,9 @@ def header() -> str:
             return f"{'#' * level} {text}\n"
 
         except ValueError as ve:
-            print(f"\nError: {ve}")
+            print(f"\nError: {ve}\n")
         except LevelError as le:
-            print(f"\nError: {le}")
+            print(f"\nError: {le}\n")
 
 
 def link() -> str:
@@ -75,25 +75,25 @@ def prompt_list_elements():
             if number_of_rows < 1:
                 raise ListParameterError('The number of rows should be greater than zero')
 
-            elements = (int(input(f'Row #{i}')) for i in range(number_of_rows))
+            elements = (input(f'Row #{i + 1} ') for i in range(number_of_rows))
             return elements
 
         except ValueError:
-            print('\nError: Enter a valid number. ')
+            print('\nError: Enter a valid number. \n')
         except ListParameterError as lpe:
-            print(f"\nError: {lpe}")
+            print(f"\nError: {lpe}\n")
 
 
 def ordered_list() -> str:
     elements = prompt_list_elements()
     ord_list_str = '\n'.join(f'{i + 1}. {element}' for i, element in enumerate(elements))
-    return ord_list_str
+    return ord_list_str + '\n'
 
 
 def unordered_list() -> str:
     elements = prompt_list_elements()
     unordered_list_str = '\n'.join(f'* {element}' for element in elements)
-    return unordered_list_str
+    return unordered_list_str + '\n'
 
 
 class FormatterOptions(Enum):
