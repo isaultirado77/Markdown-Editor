@@ -61,7 +61,30 @@ def new_line() -> str:
     return '\n'
 
 
+class ListParameterError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
+def prompt_list_elements():
+    try:
+        number_of_rows = int(input('Number of rows: '))
+
+        if number_of_rows < 1:
+            raise ListParameterError('The number of rows should be greater than zero')
+
+        elements = (int(input(f'Row #{i}')) for i in range(number_of_rows))
+        return elements
+
+    except ValueError:
+        print('Error: Enter a valid number. ')
+    except ListParameterError as lpe:
+        print(f"Error: {lpe}")
+
+
 def ordered_list():
+
     pass
 
 
