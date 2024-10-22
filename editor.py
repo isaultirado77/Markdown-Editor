@@ -2,36 +2,53 @@ from enum import Enum
 
 
 def prompt_formater() -> str:
-    return input("Choose a formatter: ")
+    option = input("Choose a formatter: ")
+    if '-' in option:
+        option = option.replace('-', '_')
+
+    return option
 
 
 def plain() -> str:
-    return input()
+    return input('Text: ')
 
 
 def bold() -> str:
-    return f'**{input()}**'
+    return f'**{input('Text: ')}**'
 
 
 def italic() -> str:
-    return f'*{input()}*'
+    return f'*{input('Text: ')}*'
 
 
 def inline_code() -> str:
-    return f'`{input()}`'
+    return f'`{input('Text: ')}`'
+
+
+class LevelError(Exception):
+    """Exception raised for errors in the level input."""
+
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
 
 
 def header() -> str:
-    try:
-        level = int(input('Level: '))
-        if level < 1:
-            raise ValueError
+    while True:
+        try:
+            level = int(input('Level: '))
+            if level < 1:
+                raise ValueError("Error: Enter a valid number")
+            elif level > 6:
+                raise LevelError("The level should be within the range of 1 to 6.")
 
-        text = input()
-        return '#' * level + text
+            text = input('Text: ')
+            return f"{'#' * level} {text}\n"
 
-    except ValueError:
-        print("Error: Enter a valid number")
+        except ValueError as ve:
+            print(f"Error: {ve}")
+        except LevelError as le:
+            print(f"Error: {le}")
 
 
 def link() -> str:
@@ -58,7 +75,7 @@ class FormatterOptions(Enum):
     ITALIC = 'italic'
     HEADER = 'header'
     LINK = 'link'
-    INLINE = 'inline-code'
+    INLINE_CODE = 'inline-code'
     ORDERED_LIST = 'ordered-list'
     UNORDERED_LIST = 'unordered-list'
     NEW_LINE = 'new-line'
@@ -113,7 +130,7 @@ formatter_functions = {
     FormatterOptions.ITALIC: italic,
     FormatterOptions.HEADER: header,
     FormatterOptions.LINK: link,
-    FormatterOptions.INLINE: inline_code,
+    FormatterOptions.INLINE_CODE: inline_code,
     FormatterOptions.ORDERED_LIST: ordered_list,
     FormatterOptions.UNORDERED_LIST: unordered_list,
     FormatterOptions.NEW_LINE: new_line,
@@ -124,19 +141,23 @@ def run():
     document = MarkdownDocument()
 
     while True:
-        option = prompt_formater()
+        try:
+            option = prompt_formater()
 
-        if option == Features.DONE.value:
-            break
+            if option == Features.DONE.value:
+                break
 
-        if option == Features.HELP.value:
-            FormatterOptions.print_values()
-            Features.print_special_commands()
+            if option == Features.HELP.value:
+                FormatterOptions.print_values()
+                Features.print_special_commands()
 
-        elif option in FormatterOptions.get_values_as_tuple():
-            pass
+            formatter_option = FormatterOptions[option.upper()]
+            result = formatter_functions[formatter_option]()
 
-        else:
+            document.add_text(result)
+            document.print_content()
+
+        except KeyError:
             print('Unknown formatting type or command')
 
 
