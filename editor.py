@@ -38,7 +38,7 @@ def header() -> str:
         try:
             level = int(input('Level: '))
             if level < 1:
-                raise ValueError("Error: Enter a valid number")
+                raise ValueError("Enter a valid number")
             elif level > 6:
                 raise LevelError("The level should be within the range of 1 to 6.")
 
@@ -46,9 +46,9 @@ def header() -> str:
             return f"{'#' * level} {text}\n"
 
         except ValueError as ve:
-            print(f"Error: {ve}")
+            print(f"\nError: {ve}")
         except LevelError as le:
-            print(f"Error: {le}")
+            print(f"\nError: {le}")
 
 
 def link() -> str:
@@ -68,28 +68,32 @@ class ListParameterError(Exception):
 
 
 def prompt_list_elements():
-    try:
-        number_of_rows = int(input('Number of rows: '))
+    while True:
+        try:
+            number_of_rows = int(input('Number of rows: '))
 
-        if number_of_rows < 1:
-            raise ListParameterError('The number of rows should be greater than zero')
+            if number_of_rows < 1:
+                raise ListParameterError('The number of rows should be greater than zero')
 
-        elements = (int(input(f'Row #{i}')) for i in range(number_of_rows))
-        return elements
+            elements = (int(input(f'Row #{i}')) for i in range(number_of_rows))
+            return elements
 
-    except ValueError:
-        print('Error: Enter a valid number. ')
-    except ListParameterError as lpe:
-        print(f"Error: {lpe}")
-
-
-def ordered_list():
-
-    pass
+        except ValueError:
+            print('\nError: Enter a valid number. ')
+        except ListParameterError as lpe:
+            print(f"\nError: {lpe}")
 
 
-def unordered_list():
-    pass
+def ordered_list() -> str:
+    elements = prompt_list_elements()
+    ord_list_str = '\n'.join(f'{i + 1}. {element}' for i, element in enumerate(elements))
+    return ord_list_str
+
+
+def unordered_list() -> str:
+    elements = prompt_list_elements()
+    unordered_list_str = '\n'.join(f'* {element}' for element in elements)
+    return unordered_list_str
 
 
 class FormatterOptions(Enum):
