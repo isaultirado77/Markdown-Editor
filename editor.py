@@ -46,24 +46,43 @@ def prompt_formater() -> str:
     return input("Choose a formatter: ")
 
 
-def plain():
-    pass
+def plain() -> str:
+    return input()
 
 
-def bold():
-    pass
+def bold() -> str:
+    return f'**{input()}**'
 
 
-def italic():
-    pass
+def italic() -> str:
+    return f'*{input()}*'
 
 
-def header():
-    pass
+def inline_code() -> str:
+    return f'`{input()}`'
 
 
-def link():
-    pass
+def header() -> str:
+    try:
+        level = int(input('Level: '))
+        if level < 1:
+            raise ValueError
+
+        text = input()
+        return '#' * level + text
+
+    except ValueError:
+        print("Error: Enter a valid number")
+
+
+def link() -> str:
+    label = input('Label: ')
+    url = input('URL: ')
+    return f'[{label}]({url})'
+
+
+def new_line() -> str:
+    return '\n'
 
 
 def ordered_list():
@@ -71,10 +90,6 @@ def ordered_list():
 
 
 def unordered_list():
-    pass
-
-
-def new_line():
     pass
 
 
