@@ -149,6 +149,10 @@ class MarkdownDocument:
     def print_content(self) -> None:
         print(self.get_content())
 
+    def get_document(self, name: str = 'output.md') -> None:
+        file = open(name, mode='w', encoding='utf-8')
+        file.write(self.content)
+
 
 # Mapping functions
 formatter_functions = {
@@ -172,6 +176,7 @@ def run():
             option = prompt_formater()
 
             if option == Features.DONE.value:
+                document.get_document()
                 break
 
             if option == Features.HELP.value:
