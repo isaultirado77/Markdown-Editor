@@ -38,8 +38,44 @@ class Features(Enum):
         print(cls.get_special_commands())
 
 
+class Text:
+    pass
+
+
 def prompt_formater() -> str:
     return input("Choose a formatter: ")
+
+
+def plain():
+    pass
+
+
+def bold():
+    pass
+
+
+def italic():
+    pass
+
+
+def header():
+    pass
+
+
+def link():
+    pass
+
+
+def ordered_list():
+    pass
+
+
+def unordered_list():
+    pass
+
+
+def new_line():
+    pass
 
 
 def run():
